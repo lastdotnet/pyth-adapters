@@ -31,7 +31,7 @@ contract DeployPythAdapterFactory is Script {
         priceIds[8] = 0xe35aebd2d35795acaa2b0e59f3b498510e8ef334986d151d1502adb9e26234f7; // mHYPE/HYPE
         priceIds[9] = 0x7f2e9a7365eb634c543e9ca72683a9cf778cdc16ee5b8bca73abe6d08c1410d5; // feUSD
         priceIds[10] = 0xcfc1303ea9f083b1b4f99e1369fb9d2611f3230d5ea33a6abf2f86071c089fdc; // USDT0
-        
+
         assets[0] = 0x5555555555555555555555555555555555555555;
         assets[1] = 0x5748ae796AE46A4F1348a1693de4b50560485562;
         assets[2] = 0x9FDBdA0A5e284c32744D2f17Ee5c74B284993463;
@@ -44,7 +44,7 @@ contract DeployPythAdapterFactory is Script {
         assets[9] = 0x02c6a2fA58cC01A18B8D9E00eA48d65E4dF26c70;
         assets[10] = 0xB8CE59FC3717ada4C02eaDF9682A9e934F625ebb;
 
-        descriptions[0] = "WHYPE/USD Oracle";    
+        descriptions[0] = "WHYPE/USD Oracle";
         descriptions[1] = "LHYPE/USD Oracle";
         descriptions[2] = "UBTC/USD Oracle";
         descriptions[3] = "UETH/USD Oracle";
@@ -57,12 +57,7 @@ contract DeployPythAdapterFactory is Script {
         descriptions[10] = "USDT0/USD Oracle";
 
         // Deploy the factory
-        new PythAdapterFactory(
-            pythPriceFeedsContract,
-            assets,
-            priceIds,
-            descriptions
-        );
+        new PythAdapterFactory(pythPriceFeedsContract, assets, priceIds, descriptions);
 
         vm.stopBroadcast();
     }

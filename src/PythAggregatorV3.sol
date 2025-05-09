@@ -29,11 +29,11 @@ contract PythAggregatorV3 {
         // Update the prices to the latest available values and pay the required fee for it. The `priceUpdateData` data
         // should be retrieved from our off-chain Price Service API using the `pyth-evm-js` package.
         // See section "How Pyth Works on EVM Chains" below for more information.
-        uint fee = pyth.getUpdateFee(priceUpdateData);
+        uint256 fee = pyth.getUpdateFee(priceUpdateData);
         pyth.updatePriceFeeds{value: fee}(priceUpdateData);
 
         // refund remaining eth
-        (bool success, ) = payable(msg.sender).call{value: address(this).balance}("");
+        (bool success,) = payable(msg.sender).call{value: address(this).balance}("");
         require(success, "Refund failed");
     }
 
@@ -69,48 +69,22 @@ contract PythAggregatorV3 {
         return latestTimestamp();
     }
 
-    function getRoundData(
-        uint80 _roundId
-    )
+    function getRoundData(uint80 _roundId)
         external
         view
-        returns (
-            uint80 roundId,
-            int256 answer,
-            uint256 startedAt,
-            uint256 updatedAt,
-            uint80 answeredInRound
-        )
+        returns (uint80 roundId, int256 answer, uint256 startedAt, uint256 updatedAt, uint80 answeredInRound)
     {
         PythStructs.Price memory price = pyth.getPriceUnsafe(priceId);
-        return (
-            _roundId,
-            int256(price.price),
-            price.publishTime,
-            price.publishTime,
-            _roundId
-        );
+        return (_roundId, int256(price.price), price.publishTime, price.publishTime, _roundId);
     }
 
     function latestRoundData()
         external
         view
-        returns (
-            uint80 roundId,
-            int256 answer,
-            uint256 startedAt,
-            uint256 updatedAt,
-            uint80 answeredInRound
-        )
+        returns (uint80 roundId, int256 answer, uint256 startedAt, uint256 updatedAt, uint80 answeredInRound)
     {
         PythStructs.Price memory price = pyth.getPriceUnsafe(priceId);
         roundId = uint80(price.publishTime);
-        return (
-            roundId,
-            int256(price.price),
-            price.publishTime,
-            price.publishTime,
-            roundId
-        );
+        return (roundId, int256(price.price), price.publishTime, price.publishTime, roundId);
     }
 }
