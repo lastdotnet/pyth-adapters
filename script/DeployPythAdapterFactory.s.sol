@@ -30,7 +30,7 @@ contract DeployPythAdapterFactory is Script {
         priceIds[7] = 0x6ec879b1e9963de5ee97e9c8710b742d6228252a5e2ca12d4ae81d7fe5ee8c5d; // USDe
         priceIds[8] = 0xe35aebd2d35795acaa2b0e59f3b498510e8ef334986d151d1502adb9e26234f7; // mHYPE/HYPE
         priceIds[9] = 0x7f2e9a7365eb634c543e9ca72683a9cf778cdc16ee5b8bca73abe6d08c1410d5; // feUSD
-        priceIds[10] = 0xcfc1303ea9f083b1b4f99e1369fb9d2611f3230d5ea33a6abf2f86071c089fdc; // USDT0
+        priceIds[10] = 0x2b89b9dc8fdf9f34709a5b106b472f0f39bb6ca9ce04b0fd7f2e971688e2e53b; // USDT0
 
         assets[0] = 0x5555555555555555555555555555555555555555;
         assets[1] = 0x5748ae796AE46A4F1348a1693de4b50560485562;
@@ -54,7 +54,7 @@ contract DeployPythAdapterFactory is Script {
         descriptions[7] = "USDe/USD Oracle";
         descriptions[8] = "mHYPE/HYPE Oracle";
         descriptions[9] = "feUSD/USD Oracle";
-        descriptions[10] = "USDT0/USD Oracle";
+        descriptions[10] = "USDT/USD Oracle";
 
         // Deploy the factory
         new PythAdapterFactory(pythPriceFeedsContract, assets, priceIds, descriptions);

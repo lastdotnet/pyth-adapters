@@ -22,7 +22,8 @@ contract BatchDeployAdapters is Script {
         descriptions[0] = "USDT0/USD Oracle";
 
         // Call the factory
-        PythAdapterFactory(pythPriceFeedsContract, assets, priceIds, descriptions);
+        // PythAdapterFactory(pythPriceFeedsContract, assets, priceIds, descriptions);
+        PythAggregatorV3(0x40ffbb0BBa7d16e9509cD9F8C786103225B95f38).latestAnswer();
 
         vm.stopBroadcast();
     }
