@@ -76,6 +76,9 @@ contract PythAdapterFactory is AccessControl {
         adapter = address(newAdapter);
         feedIdToAdapter[priceId] = adapter;
 
+        newAdapter.latestAnswer();
+        newAdapter.decimals();
+
         // Emit deployment event
         emit AdapterDeployed(adapter, asset, priceId, description);
     }

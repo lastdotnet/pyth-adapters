@@ -15,9 +15,9 @@ contract DeployPythAdapterFactory is Script {
         address pythPriceFeedsContract = 0xe9d69CdD6Fe41e7B621B4A688C5D1a68cB5c8ADc;
 
         // Optional: Deploy some initial adapters
-        bytes32[] memory priceIds = new bytes32[](11);
-        address[] memory assets = new address[](11);
-        string[] memory descriptions = new string[](11);
+        bytes32[] memory priceIds = new bytes32[](13);
+        address[] memory assets = new address[](13);
+        string[] memory descriptions = new string[](13);
 
         // Example price feeds
         priceIds[0] = 0x4279e31cc369bbcc2faf022b382b080e32a8e689ff20fbc530d2a603eb6cd98b; // WHYPE
@@ -31,6 +31,8 @@ contract DeployPythAdapterFactory is Script {
         priceIds[8] = 0xe35aebd2d35795acaa2b0e59f3b498510e8ef334986d151d1502adb9e26234f7; // mHYPE/HYPE
         priceIds[9] = 0x7f2e9a7365eb634c543e9ca72683a9cf778cdc16ee5b8bca73abe6d08c1410d5; // feUSD
         priceIds[10] = 0x2b89b9dc8fdf9f34709a5b106b472f0f39bb6ca9ce04b0fd7f2e971688e2e53b; // USDT0
+        priceIds[11] = 0xcef5ad3be493afef85e77267cb0c07d048f3d54055409a34782996607e48cf0a; // cmETH/mETH RR
+        priceIds[12] = 0xee279eeb2fec830e3f535ad4d6524eb35eb1c6890cb1afc0b64554d08c88727e; // mETH/ETH RR 
 
         assets[0] = 0x5555555555555555555555555555555555555555;
         assets[1] = 0x5748ae796AE46A4F1348a1693de4b50560485562;
@@ -43,6 +45,8 @@ contract DeployPythAdapterFactory is Script {
         assets[8] = 0x0000000000000000000000000000000000000000;
         assets[9] = 0x02c6a2fA58cC01A18B8D9E00eA48d65E4dF26c70;
         assets[10] = 0xB8CE59FC3717ada4C02eaDF9682A9e934F625ebb;
+        assets[11] = 0xE6829d9a7eE3040e1276Fa75293Bde931859e8fA; // cmETH
+        assets[12] = 0xE6829d9a7eE3040e1276Fa75293Bde931859e8fA; // cmETH
 
         descriptions[0] = "WHYPE/USD Oracle";
         descriptions[1] = "LHYPE/USD Oracle";
@@ -55,6 +59,8 @@ contract DeployPythAdapterFactory is Script {
         descriptions[8] = "mHYPE/HYPE Oracle";
         descriptions[9] = "feUSD/USD Oracle";
         descriptions[10] = "USDT/USD Oracle";
+        descriptions[11] = "cmETH/mETH RR Oracle";
+        descriptions[12] = "mETH/ETH RR Oracle";
 
         // Deploy the factory
         new PythAdapterFactory(pythPriceFeedsContract, assets, priceIds, descriptions);
