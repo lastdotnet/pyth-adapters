@@ -32,7 +32,7 @@ contract DeployPythAdapterFactory is Script {
         priceIds[9] = 0x7f2e9a7365eb634c543e9ca72683a9cf778cdc16ee5b8bca73abe6d08c1410d5; // feUSD
         priceIds[10] = 0x2b89b9dc8fdf9f34709a5b106b472f0f39bb6ca9ce04b0fd7f2e971688e2e53b; // USDT0
         priceIds[11] = 0xcef5ad3be493afef85e77267cb0c07d048f3d54055409a34782996607e48cf0a; // cmETH/mETH RR
-        priceIds[12] = 0xee279eeb2fec830e3f535ad4d6524eb35eb1c6890cb1afc0b64554d08c88727e; // mETH/ETH RR 
+        priceIds[12] = 0xee279eeb2fec830e3f535ad4d6524eb35eb1c6890cb1afc0b64554d08c88727e; // mETH/ETH RR
 
         assets[0] = 0x5555555555555555555555555555555555555555;
         assets[1] = 0x5748ae796AE46A4F1348a1693de4b50560485562;

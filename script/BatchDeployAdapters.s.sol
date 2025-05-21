@@ -16,7 +16,7 @@ contract BatchDeployAdapters is Script {
         string[] memory descriptions = new string[](2);
 
         priceIds[0] = 0xcef5ad3be493afef85e77267cb0c07d048f3d54055409a34782996607e48cf0a; // cmETH/mETH RR
-        priceIds[1] = 0xee279eeb2fec830e3f535ad4d6524eb35eb1c6890cb1afc0b64554d08c88727e; // mETH/ETH RR 
+        priceIds[1] = 0xee279eeb2fec830e3f535ad4d6524eb35eb1c6890cb1afc0b64554d08c88727e; // mETH/ETH RR
 
         assets[0] = 0xE6829d9a7eE3040e1276Fa75293Bde931859e8fA; // cmETH
         assets[1] = 0xE6829d9a7eE3040e1276Fa75293Bde931859e8fA; // cmETH
@@ -25,7 +25,9 @@ contract BatchDeployAdapters is Script {
         descriptions[1] = "mETH/ETH RR Oracle";
 
         // Call the factory
-        PythAdapterFactory(0xb555CD0D4C33Dbbf61214ff02694Ff9e37531ECF).batchDeployPythAdapters(priceIds, assets, descriptions);
+        PythAdapterFactory(0xb555CD0D4C33Dbbf61214ff02694Ff9e37531ECF).batchDeployPythAdapters(
+            priceIds, assets, descriptions
+        );
 
         vm.stopBroadcast();
     }
