@@ -14,8 +14,9 @@ import {IEACAggregatorProxy} from "src/oracle/interfaces/IEACAggregatorProxy.sol
  * Final price = (HYPE/KHYPE) * (HYPE/USD price)
  */
 contract KhypeOracle is AggregatorV3Interface {
-    IEACAggregatorProxy public constant HYPE_USD_PRICE_FEED = IEACAggregatorProxy(0x1d0E4EA616A749c1620118F7d97c111e8ec36E8b);
-    IEACAggregatorProxy public constant K_HYPE_RR_FEED = IEACAggregatorProxy(0x4478c615e00fFb487aa269B2744Ef4E2DDD60851 );
+    IEACAggregatorProxy public constant HYPE_USD_PRICE_FEED =
+        IEACAggregatorProxy(0x1d0E4EA616A749c1620118F7d97c111e8ec36E8b);
+    IEACAggregatorProxy public constant K_HYPE_RR_FEED = IEACAggregatorProxy(0x4478c615e00fFb487aa269B2744Ef4E2DDD60851);
     uint256 public constant PRECISION = 1e18;
 
     struct LatestAnswerLocals {
@@ -46,13 +47,11 @@ contract KhypeOracle is AggregatorV3Interface {
     }
 
     /// @notice Returns the latest round data
-    function latestRoundData() external pure returns (
-        uint80 roundId,
-        int256 answer,
-        uint256 startedAt,
-        uint256 updatedAt,
-        uint80 answeredInRound
-    ) {
+    function latestRoundData()
+        external
+        pure
+        returns (uint80 roundId, int256 answer, uint256 startedAt, uint256 updatedAt, uint80 answeredInRound)
+    {
         require(false, "Not implemented");
         return (0, 0, 0, 0, 0);
     }
@@ -72,13 +71,11 @@ contract KhypeOracle is AggregatorV3Interface {
         return 1;
     }
 
-    function getRoundData(uint80) external pure returns (
-        uint80 roundId,
-        int256 answer,
-        uint256 startedAt,
-        uint256 updatedAt,
-        uint80 answeredInRound
-    ) { 
+    function getRoundData(uint80)
+        external
+        pure
+        returns (uint80 roundId, int256 answer, uint256 startedAt, uint256 updatedAt, uint80 answeredInRound)
+    {
         require(false, "Not implemented; No historical data for KHYPE/HYPE exchange rate");
         return (0, 0, 0, 0, 0);
     }

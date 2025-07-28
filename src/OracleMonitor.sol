@@ -28,20 +28,17 @@ contract OracleMonitor is AccessControl {
     address public fraxlendRegistry;
 
     modifier onlyAdmin() {
-        require(
-            hasRole(ADMIN_ROLE, msg.sender) || hasRole(DEFAULT_ADMIN_ROLE, msg.sender),
-            "Caller must be admin"
-        );
+        require(hasRole(ADMIN_ROLE, msg.sender) || hasRole(DEFAULT_ADMIN_ROLE, msg.sender), "Caller must be admin");
         _;
     }
 
     constructor(address _aaveAddressesProvider, address _fraxlendRegistry) {
         require(_aaveAddressesProvider != address(0), "Invalid Aave provider");
         require(_fraxlendRegistry != address(0), "Invalid Fraxlend registry");
-        
+
         aaveAddressesProvider = _aaveAddressesProvider;
         fraxlendRegistry = _fraxlendRegistry;
-        
+
         _grantRole(DEFAULT_ADMIN_ROLE, msg.sender);
         _grantRole(ADMIN_ROLE, msg.sender);
     }
@@ -53,21 +50,21 @@ contract OracleMonitor is AccessControl {
     function getAssetStatuses() external view returns (OracleStatus[] memory statuses) {
         // Get Aave assets
         OracleStatus[] memory aaveStatuses = _getAaveAssetStatuses();
-        
+
         // Get Fraxlend assets
         OracleStatus[] memory fraxlendStatuses = _getFraxlendAssetStatuses();
-        
+
         // Combine arrays
         uint256 totalLength = aaveStatuses.length + fraxlendStatuses.length;
         statuses = new OracleStatus[](totalLength);
-        
+
         // Copy Aave statuses
-        for (uint i = 0; i < aaveStatuses.length; i++) {
+        for (uint256 i = 0; i < aaveStatuses.length; i++) {
             statuses[i] = aaveStatuses[i];
         }
-        
+
         // Copy Fraxlend statuses
-        for (uint i = 0; i < fraxlendStatuses.length; i++) {
+        for (uint256 i = 0; i < fraxlendStatuses.length; i++) {
             statuses[aaveStatuses.length + i] = fraxlendStatuses[i];
         }
     }
@@ -80,12 +77,12 @@ contract OracleMonitor is AccessControl {
         try IPoolAddressesProvider(aaveAddressesProvider).getPool() returns (address pool) {
             try IAavePool(pool).getReservesList() returns (address[] memory reserves) {
                 statuses = new OracleStatus[](reserves.length);
-                
+
                 address oracle = IPoolAddressesProvider(aaveAddressesProvider).getPriceOracle();
-                
-                for (uint i = 0; i < reserves.length; i++) {
+
+                for (uint256 i = 0; i < reserves.length; i++) {
                     address asset = reserves[i];
-                    
+
                     OracleStatus memory status = OracleStatus({
                         asset: asset,
                         source: "aave",
@@ -95,7 +92,7 @@ contract OracleMonitor is AccessControl {
                         decimals: 8,
                         status: "UNKNOWN"
                     });
-                    
+
                     try IAaveOracle(oracle).getAssetPrice(asset) returns (uint256 price) {
                         status.latestPrice = int256(price);
                         status.isHealthy = price > 0;
@@ -104,7 +101,7 @@ contract OracleMonitor is AccessControl {
                     } catch {
                         status.status = "ERROR";
                     }
-                    
+
                     statuses[i] = status;
                 }
             } catch {
@@ -122,10 +119,10 @@ contract OracleMonitor is AccessControl {
     function _getFraxlendAssetStatuses() internal view returns (OracleStatus[] memory statuses) {
         try IFraxlendRegistry(fraxlendRegistry).getAllPairs() returns (address[] memory pairs) {
             statuses = new OracleStatus[](pairs.length);
-            
-            for (uint i = 0; i < pairs.length; i++) {
+
+            for (uint256 i = 0; i < pairs.length; i++) {
                 address pair = pairs[i];
-                
+
                 try IFraxlendPair(pair).asset() returns (address asset) {
                     try IFraxlendPair(pair).oracle() returns (address oracle) {
                         OracleStatus memory status = OracleStatus({
@@ -137,7 +134,7 @@ contract OracleMonitor is AccessControl {
                             decimals: 0,
                             status: "UNKNOWN"
                         });
-                        
+
                         try IFraxlendOracle(oracle).getPrice() returns (uint256 price) {
                             try IFraxlendOracle(oracle).decimals() returns (uint8 decimals) {
                                 status.latestPrice = int256(price);
@@ -151,7 +148,7 @@ contract OracleMonitor is AccessControl {
                         } catch {
                             status.status = "ERROR";
                         }
-                        
+
                         statuses[i] = status;
                     } catch {
                         // Skip this pair if oracle call fails
@@ -192,17 +189,17 @@ contract OracleMonitor is AccessControl {
         // Check Aave first
         try IPoolAddressesProvider(aaveAddressesProvider).getPool() returns (address pool) {
             try IAavePool(pool).getReservesList() returns (address[] memory reserves) {
-                for (uint i = 0; i < reserves.length; i++) {
+                for (uint256 i = 0; i < reserves.length; i++) {
                     if (reserves[i] == asset) {
                         return _getAaveAssetStatus(asset);
                     }
                 }
             } catch {}
         } catch {}
-        
+
         // Check Fraxlend
         try IFraxlendRegistry(fraxlendRegistry).getAllPairs() returns (address[] memory pairs) {
-            for (uint i = 0; i < pairs.length; i++) {
+            for (uint256 i = 0; i < pairs.length; i++) {
                 try IFraxlendPair(pairs[i]).asset() returns (address pairAsset) {
                     if (pairAsset == asset) {
                         return _getFraxlendAssetStatus(pairs[i], asset);
@@ -210,7 +207,7 @@ contract OracleMonitor is AccessControl {
                 } catch {}
             }
         } catch {}
-        
+
         revert("Asset not found in Aave or Fraxlend");
     }
 
@@ -221,7 +218,7 @@ contract OracleMonitor is AccessControl {
      */
     function _getAaveAssetStatus(address asset) internal view returns (OracleStatus memory status) {
         address oracle = IPoolAddressesProvider(aaveAddressesProvider).getPriceOracle();
-        
+
         status = OracleStatus({
             asset: asset,
             source: "aave",
@@ -231,7 +228,7 @@ contract OracleMonitor is AccessControl {
             decimals: 8,
             status: "UNKNOWN"
         });
-        
+
         try IAaveOracle(oracle).getAssetPrice(asset) returns (uint256 price) {
             status.latestPrice = int256(price);
             status.isHealthy = price > 0;
@@ -259,7 +256,7 @@ contract OracleMonitor is AccessControl {
                 decimals: 0,
                 status: "UNKNOWN"
             });
-            
+
             try IFraxlendOracle(oracle).getPrice() returns (uint256 price) {
                 try IFraxlendOracle(oracle).decimals() returns (uint8 decimals) {
                     status.latestPrice = int256(price);
