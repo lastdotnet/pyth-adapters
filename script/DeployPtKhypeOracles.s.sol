@@ -16,8 +16,10 @@ contract DeployPtKhypeOracles is Script {
         address ptkhypeMarket = vm.envAddress("PTKHYPE_MARKET");
         address ptkhypeToken = vm.envAddress("PTKHYPE_TOKEN");
         address khypeToken = vm.envAddress("KHYPE_TOKEN");
-        uint32 twapWindow = vm.envUint32("TWAP_WINDOW");
+        uint256 twapWindow = vm.envUint("TWAP_WINDOW");
         address khypeUsdOracle = vm.envAddress("KHYPE_USD_ORACLE");
+
+        require(twapWindow <= uint256(type(uint32).max), "TWAP window must be at most 2^32 - 1");
 
         console.log("Deployment Parameters:");
         console.log("Pendle Oracle:", pendleOracle);
@@ -30,7 +32,7 @@ contract DeployPtKhypeOracles is Script {
         // Deploy the PTKHYPE/KHYPE redemption rate oracle
         console.log("\nDeploying PtKhypeRedemptionOracle...");
         PtKhypeRedemptionOracle redemptionOracle =
-            new PtKhypeRedemptionOracle(pendleOracle, ptkhypeMarket, ptkhypeToken, khypeToken, twapWindow);
+            new PtKhypeRedemptionOracle(pendleOracle, ptkhypeMarket, ptkhypeToken, khypeToken, uint32(twapWindow));
         console.log("PtKhypeRedemptionOracle deployed at:", address(redemptionOracle));
 
         // Test the redemption rate oracle
