@@ -1,5 +1,5 @@
 // SPDX-License-Identifier: MIT
-pragma solidity 0.8.10;
+pragma solidity ^0.8.10;
 
 // solhint-disable-next-line interface-starts-with-i
 interface AggregatorV3Interface {
