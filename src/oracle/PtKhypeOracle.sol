@@ -11,15 +11,14 @@ import {PendleUniversalOracle} from "euler-price-oracle/adapter/pendle/PendleUni
  * @dev Calculates PTKHYPE/USD = (PTKHYPE/KHYPE) * (KHYPE/USD)
  */
 contract PtKhypeOracle {
-    
     // State variables
     address public immutable redemptionOracle; // PTKHYPE/KHYPE redemption rate oracle
-    address public immutable khypeUsdOracle;   // KHYPE/USD price oracle
+    address public immutable khypeUsdOracle; // KHYPE/USD price oracle
     uint8 public constant DECIMALS = 8;
-    
+
     // Events
     event PriceUpdated(uint256 ptkhypeUsdPrice, uint256 redemptionRate, uint256 khypeUsdPrice);
-    
+
     /**
      * @notice Constructor for PtKhypeOracle
      * @param _redemptionOracle Address of PTKHYPE/KHYPE redemption rate oracle
@@ -28,11 +27,11 @@ contract PtKhypeOracle {
     constructor(address _redemptionOracle, address _khypeUsdOracle) {
         require(_redemptionOracle != address(0), "Invalid redemption oracle");
         require(_khypeUsdOracle != address(0), "Invalid KHYPE/USD oracle");
-        
+
         redemptionOracle = _redemptionOracle;
         khypeUsdOracle = _khypeUsdOracle;
     }
-    
+
     struct LatestAnswerLocals {
         int256 ptKhypeUsdPrice;
         uint256 khypePerPtKhype;
@@ -54,14 +53,15 @@ contract PtKhypeOracle {
 
         require(locals.khypeUsdPrice > 0, "HYPE/USD price is not positive");
 
-        locals.khypeUsdPrice = locals.khypePerPtKhype * uint256(locals.khypeUsdPrice) / (10 ** locals.redemptionRateDecimals);
+        locals.khypeUsdPrice =
+            locals.khypePerPtKhype * uint256(locals.khypeUsdPrice) / (10 ** locals.redemptionRateDecimals);
 
         noInt256Overflow(locals.khypeUsdPrice, "KHYPE USD price int256 overflow");
 
         // USD price of KHYPE
         return int256(locals.khypeUsdPrice);
     }
-    
+
     /**
      * @notice Get the decimals for the price
      * @return decimals The number of decimal places (8 for USD prices)
@@ -69,7 +69,7 @@ contract PtKhypeOracle {
     function decimals() external pure returns (uint8) {
         return DECIMALS;
     }
-    
+
     /**
      * @notice Get the latest round data (Chainlink-style interface)
      * @return roundId The round ID (always 1 for this oracle)
@@ -78,16 +78,14 @@ contract PtKhypeOracle {
      * @return updatedAt Timestamp when the round was updated
      * @return answeredInRound The round ID in which the answer was computed
      */
-    function latestRoundData() external view returns (
-        uint80 roundId,
-        int256 answer,
-        uint256 startedAt,
-        uint256 updatedAt,
-        uint80 answeredInRound
-    ) {
+    function latestRoundData()
+        external
+        view
+        returns (uint80 roundId, int256 answer, uint256 startedAt, uint256 updatedAt, uint80 answeredInRound)
+    {
         require(false, "Not implemented");
     }
-    
+
     /**
      * @notice Get the description of the oracle
      * @return description The oracle description
@@ -95,7 +93,7 @@ contract PtKhypeOracle {
     function description() external pure returns (string memory) {
         return "PTKHYPE/USD Price Oracle";
     }
-    
+
     /**
      * @notice Get the version of the oracle
      * @return version The oracle version
@@ -103,7 +101,7 @@ contract PtKhypeOracle {
     function version() external pure returns (uint256) {
         return 1;
     }
-    
+
     /**
      * @notice Get the redemption rate from the PTKHYPE/KHYPE oracle
      * @return rate The redemption rate with 18 decimals
@@ -116,7 +114,7 @@ contract PtKhypeOracle {
             revert("Failed to get redemption rate");
         }
     }
-    
+
     /**
      * @notice Get the KHYPE/USD price from the oracle
      * @return price The KHYPE/USD price with 8 decimals
