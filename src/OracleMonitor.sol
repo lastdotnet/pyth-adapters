@@ -3,6 +3,37 @@ pragma solidity ^0.8.0;
 
 import {AccessControl} from "@openzeppelin/contracts/access/AccessControl.sol";
 
+// Aave v3 interfaces
+interface IPoolAddressesProvider {
+    function getPriceOracle() external view returns (address);
+    function getPool() external view returns (address);
+}
+
+interface IAavePool {
+    function getReservesList() external view returns (address[] memory);
+}
+
+interface IAaveOracle {
+    function getAssetPrice(address asset) external view returns (uint256);
+}
+
+// Fraxlend interfaces
+interface IFraxlendRegistry {
+    function getPair(address asset, address collateral) external view returns (address pair);
+    function getAllPairs() external view returns (address[] memory);
+}
+
+interface IFraxlendPair {
+    function oracle() external view returns (address);
+    function asset() external view returns (address);
+    function collateral() external view returns (address);
+}
+
+interface IFraxlendOracle {
+    function getPrice() external view returns (uint256);
+    function decimals() external view returns (uint8);
+}
+
 /**
  * @title OracleMonitor
  * @notice Monitors oracle status from Aave v3 and Fraxlend deployments
@@ -300,35 +331,4 @@ contract OracleMonitor is AccessControl {
         require(_fraxlendRegistry != address(0), "Invalid address");
         fraxlendRegistry = _fraxlendRegistry;
     }
-}
-
-// Aave v3 interfaces
-interface IPoolAddressesProvider {
-    function getPriceOracle() external view returns (address);
-    function getPool() external view returns (address);
-}
-
-interface IAavePool {
-    function getReservesList() external view returns (address[] memory);
-}
-
-interface IAaveOracle {
-    function getAssetPrice(address asset) external view returns (uint256);
-}
-
-// Fraxlend interfaces
-interface IFraxlendRegistry {
-    function getPair(address asset, address collateral) external view returns (address pair);
-    function getAllPairs() external view returns (address[] memory);
-}
-
-interface IFraxlendPair {
-    function oracle() external view returns (address);
-    function asset() external view returns (address);
-    function collateral() external view returns (address);
-}
-
-interface IFraxlendOracle {
-    function getPrice() external view returns (uint256);
-    function decimals() external view returns (uint8);
 }
