@@ -12,12 +12,12 @@ contract DeployPtKhypeOracles is Script {
         vm.startBroadcast(deployerPrivateKey);
 
         // Get deployment parameters from environment variables
-        address pendleOracle = vm.envAddress("PENDLE_ORACLE");
-        address ptkhypeMarket = vm.envAddress("PTKHYPE_MARKET");
-        address ptkhypeToken = vm.envAddress("PTKHYPE_TOKEN");
-        address khypeToken = vm.envAddress("KHYPE_TOKEN");
-        uint256 twapWindow = vm.envUint("TWAP_WINDOW");
-        address khypeUsdOracle = vm.envAddress("KHYPE_USD_ORACLE");
+        address pendleOracle = 0x9a9Fa8338dd5E5B2188006f1Cd2Ef26d921650C2;
+        address ptkhypeMarket = 0x8867d2b7aDb8609c51810237EcC9A25A2F601B97;
+        address ptkhypeToken = 0x311dB0FDe558689550c68355783c95eFDfe25329;
+        address khypeToken = 0xfD739d4e423301CE9385c1fb8850539D657C296D;
+        uint256 twapWindow = 15 minutes;
+        address khypeUsdOracle = 0xE861F6e8D140d78efFae6dd1755E8C6962Bb1f4F;
 
         require(twapWindow <= uint256(type(uint32).max), "TWAP window must be at most 2^32 - 1");
 
