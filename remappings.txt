@@ -1,3 +1,5 @@
 @pythnetwork/pyth-sdk-solidity/=node_modules/@pythnetwork/pyth-sdk-solidity
 @openzeppelin/=lib/openzeppelin-contracts/
+@pendle/core-v2/=lib/euler-price-oracle/lib/pendle-core-v2-public/contracts/
+@euler/price-oracle-v2/=lib/euler-price-oracle/src/
 
