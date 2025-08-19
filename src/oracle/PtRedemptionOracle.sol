@@ -29,7 +29,7 @@ contract PtRedemptionOracle is PendleUniversalOracle {
      * @notice Get the latest answer (price) from the oracle
      * @return answer The latest price as an int256
      */
-    function latestAnswer() external view returns (int256 answer) {
+    function latestAnswer() public view returns (int256 answer) {
         answer = int256(_getQuote(1e18, base, quote));
     }
 
@@ -54,7 +54,23 @@ contract PtRedemptionOracle is PendleUniversalOracle {
         view
         returns (uint80 roundId, int256 answer, uint256 startedAt, uint256 updatedAt, uint80 answeredInRound)
     {
-        require(false, "Not implemented");
+        try this.latestAnswer() returns (int256 price) {
+            return (
+                1, // roundId
+                price, // answer
+                block.timestamp, // startedAt
+                block.timestamp, // updatedAt
+                1 // answeredInRound
+            );
+        } catch {
+            return (
+                1, // roundId
+                0, // answer
+                block.timestamp, // startedAt
+                block.timestamp, // updatedAt
+                1 // answeredInRound
+            );
+        }
     }
 
     /**

@@ -46,7 +46,7 @@ contract PtUsdOracle {
      * @notice Get the price of UNDERLYING in the base currency (ETH)
      * @return The price of UNDERLYING in the base currency (ETH)
      */
-    function latestAnswer() external view returns (int256) {
+    function latestAnswer() public view returns (int256) {
         LatestAnswerLocals memory locals;
 
         (locals.underlyingPerPt, locals.redemptionRateDecimals) = _getRedemptionRate();
@@ -80,12 +80,30 @@ contract PtUsdOracle {
      * @return updatedAt Timestamp when the round was updated
      * @return answeredInRound The round ID in which the answer was computed
      */
-    function latestRoundData()
-        external
-        view
-        returns (uint80 roundId, int256 answer, uint256 startedAt, uint256 updatedAt, uint80 answeredInRound)
-    {
-        require(false, "Not implemented");
+    function latestRoundData() external view returns (
+        uint80 roundId,
+        int256 answer,
+        uint256 startedAt,
+        uint256 updatedAt,
+        uint80 answeredInRound
+    ) {
+        try this.latestAnswer() returns (int256 price) {
+            return (
+                1, // roundId
+                price, // answer
+                block.timestamp, // startedAt
+                block.timestamp, // updatedAt
+                1 // answeredInRound
+            );
+        } catch {
+            return (
+                1, // roundId
+                0, // answer
+                block.timestamp, // startedAt
+                block.timestamp, // updatedAt
+                1 // answeredInRound
+            );
+        }
     }
 
     /**
@@ -100,7 +118,7 @@ contract PtUsdOracle {
      * @notice Get the redemption rate from the PTKHYPE/KHYPE oracle
      * @return rate The redemption rate with 18 decimals
      */
-    function _getRedemptionRate() internal view returns (uint256 rate, uint8 decimals) {
+    function _getRedemptionRate() internal view returns (uint256 rate, uint8 rateDecimals) {
         try IEACAggregatorProxy(redemptionOracle).latestAnswer() returns (int256 answer) {
             require(answer > 0, "Invalid redemption rate");
             return (uint256(answer), AggregatorV3Interface(redemptionOracle).decimals());
@@ -113,7 +131,7 @@ contract PtUsdOracle {
      * @notice Get the UNDERLYING/USD price from the oracle
      * @return price The UNDERLYING/USD price with 8 decimals
      */
-    function _getUnderlyingUsdPrice() internal view returns (uint256 price, uint8 decimals) {
+    function _getUnderlyingUsdPrice() internal view returns (uint256 price, uint8 priceDecimals) {
         try IEACAggregatorProxy(underlyingUsdOracle).latestAnswer() returns (int256 answer) {
             require(answer > 0, "Invalid UNDERLYING/USD price");
             return (uint256(answer), AggregatorV3Interface(underlyingUsdOracle).decimals());
