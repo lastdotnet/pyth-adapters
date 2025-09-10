@@ -80,10 +80,11 @@ contract PtKhypeOracle {
      */
     function latestRoundData()
         external
-        view
-        returns (uint80 roundId, int256 answer, uint256 startedAt, uint256 updatedAt, uint80 answeredInRound)
+        pure
+        returns (uint80 /*roundId*/, int256 /*answer*/, uint256 /*startedAt*/, uint256 /*updatedAt*/, uint80 /*answeredInRound*/)
     {
         require(false, "Not implemented");
+        return (0, 0, 0, 0, 0);
     }
 
     /**
@@ -106,7 +107,7 @@ contract PtKhypeOracle {
      * @notice Get the redemption rate from the PTKHYPE/KHYPE oracle
      * @return rate The redemption rate with 18 decimals
      */
-    function _getRedemptionRate() internal view returns (uint256 rate, uint8 decimals) {
+    function _getRedemptionRate() internal view returns (uint256, uint8) {
         try IEACAggregatorProxy(redemptionOracle).latestAnswer() returns (int256 answer) {
             require(answer > 0, "Invalid redemption rate");
             return (uint256(answer), AggregatorV3Interface(redemptionOracle).decimals());
@@ -117,9 +118,8 @@ contract PtKhypeOracle {
 
     /**
      * @notice Get the KHYPE/USD price from the oracle
-     * @return price The KHYPE/USD price with 8 decimals
      */
-    function _getKhypeUsdPrice() internal view returns (uint256 price, uint8 decimals) {
+    function _getKhypeUsdPrice() internal view returns (uint256, uint8) {
         try IEACAggregatorProxy(khypeUsdOracle).latestAnswer() returns (int256 answer) {
             require(answer > 0, "Invalid KHYPE/USD price");
             return (uint256(answer), AggregatorV3Interface(khypeUsdOracle).decimals());
