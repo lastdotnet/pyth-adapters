@@ -10,9 +10,7 @@ contract DeployPendleUniversalAdapter is Script {
         vm.startBroadcast(deployerPrivateKey);
 
         // Deploy the PendleUniversalAdapter contract
-        new PendleUniversalAdapter(
-            vm.envAddress("PENDLE_ORACLE")
-        );
+        new PendleUniversalAdapter(vm.envAddress("PENDLE_ORACLE"));
 
         vm.stopBroadcast();
     }

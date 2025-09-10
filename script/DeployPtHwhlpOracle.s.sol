@@ -37,8 +37,14 @@ contract DeployPtHwhlpOracles is Script {
 
         // Deploy the PThwHLP/hwHLP redemption rate oracle
         console.log("\nDeploying PtHwhlpRedemptionOracle...");
-        PtRedemptionOracle redemptionOracle =
-            new PtRedemptionOracle(pendleOracle, ptHwhlpMarket, ptHwhlpToken, hwhlpToken, uint32(twapWindow), "PThwHLP/hwHLP Redemption Rate Oracle");
+        PtRedemptionOracle redemptionOracle = new PtRedemptionOracle(
+            pendleOracle,
+            ptHwhlpMarket,
+            ptHwhlpToken,
+            hwhlpToken,
+            uint32(twapWindow),
+            "PThwHLP/hwHLP Redemption Rate Oracle"
+        );
         console.log("PtRedemptionOracle deployed at:", address(redemptionOracle));
 
         // Test the redemption rate oracle
@@ -52,7 +58,8 @@ contract DeployPtHwhlpOracles is Script {
 
         // Deploy the PThwHLP/USD price oracle
         console.log("\nDeploying PtHwhlpOracle...");
-        PtUsdOracle ptHwhlpOracle = new PtUsdOracle(address(redemptionOracle), address(usdcUsdOracle), "PThwHLP/USD Price Oracle");
+        PtUsdOracle ptHwhlpOracle =
+            new PtUsdOracle(address(redemptionOracle), address(usdcUsdOracle), "PThwHLP/USD Price Oracle");
         console.log("PtHwhlpOracle deployed at:", address(ptHwhlpOracle));
 
         // Test the PThwHLP/USD oracle

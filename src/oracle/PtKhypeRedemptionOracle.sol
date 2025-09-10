@@ -48,7 +48,13 @@ contract PtKhypeRedemptionOracle is PendleUniversalOracle {
     function latestRoundData()
         external
         pure
-        returns (uint80 /*roundId*/, int256 /*answer*/, uint256 /*startedAt*/, uint256 /*updatedAt*/, uint80 /*answeredInRound*/)
+        returns (
+            uint80, /*roundId*/
+            int256, /*answer*/
+            uint256, /*startedAt*/
+            uint256, /*updatedAt*/
+            uint80 /*answeredInRound*/
+        )
     {
         require(false, "Not implemented");
         return (0, 0, 0, 0, 0);

@@ -80,13 +80,11 @@ contract PtUsdOracle {
      * @return updatedAt Timestamp when the round was updated
      * @return answeredInRound The round ID in which the answer was computed
      */
-    function latestRoundData() external view returns (
-        uint80 roundId,
-        int256 answer,
-        uint256 startedAt,
-        uint256 updatedAt,
-        uint80 answeredInRound
-    ) {
+    function latestRoundData()
+        external
+        view
+        returns (uint80 roundId, int256 answer, uint256 startedAt, uint256 updatedAt, uint80 answeredInRound)
+    {
         try this.latestAnswer() returns (int256 price) {
             return (
                 1, // roundId

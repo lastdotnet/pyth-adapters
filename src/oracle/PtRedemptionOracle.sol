@@ -19,9 +19,14 @@ contract PtRedemptionOracle is PendleUniversalOracle {
      * @param _quote Quote asset address
      * @param _twapWindow TWAP window
      */
-    constructor(address _pendleOracle, address _pendleMarket, address _base, address _quote, uint32 _twapWindow, string memory _description)
-        PendleUniversalOracle(_pendleOracle, _pendleMarket, _base, _quote, _twapWindow)
-    {
+    constructor(
+        address _pendleOracle,
+        address _pendleMarket,
+        address _base,
+        address _quote,
+        uint32 _twapWindow,
+        string memory _description
+    ) PendleUniversalOracle(_pendleOracle, _pendleMarket, _base, _quote, _twapWindow) {
         description = _description;
     }
 

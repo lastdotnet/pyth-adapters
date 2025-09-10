@@ -37,8 +37,14 @@ contract DeployPtSusdeOracle is Script {
 
         // Deploy the PTsUSDe/sUSDe redemption rate oracle
         console.log("\nDeploying PtSusdeRedemptionOracle...");
-        PtRedemptionOracle redemptionOracle =
-            new PtRedemptionOracle(pendleOracle, ptSusdeMarket, ptSusdeToken, susdeToken, uint32(twapWindow), "PTsUSDe/USDe Redemption Rate Oracle");
+        PtRedemptionOracle redemptionOracle = new PtRedemptionOracle(
+            pendleOracle,
+            ptSusdeMarket,
+            ptSusdeToken,
+            susdeToken,
+            uint32(twapWindow),
+            "PTsUSDe/USDe Redemption Rate Oracle"
+        );
         console.log("PtRedemptionOracle deployed at:", address(redemptionOracle));
 
         // Test the redemption rate oracle
@@ -52,7 +58,8 @@ contract DeployPtSusdeOracle is Script {
 
         // Deploy the PTsUSDe/USD price oracle
         console.log("\nDeploying PtSusdeOracle...");
-        PtUsdOracle ptSusdeOracle = new PtUsdOracle(address(redemptionOracle), address(susdeUsdOracle), "PTsUSDe/USD Price Oracle");
+        PtUsdOracle ptSusdeOracle =
+            new PtUsdOracle(address(redemptionOracle), address(susdeUsdOracle), "PTsUSDe/USD Price Oracle");
         console.log("PtSusdeOracle deployed at:", address(ptSusdeOracle));
 
         // Test the PTsUSDe/USD oracle
